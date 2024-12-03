@@ -21,14 +21,10 @@ navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) 
 
 });
 
-socket.on("video", ({ data, username }) => {
-    const img = document.querySelector(`img[data-username="${username}"]`);
+socket.on("video", ({ data, username, userId }) => {
+    const img = document.querySelector(`img[data-userId="${userId}"]`);
     if(!img){
-        const newImg = document.createElement("img");
-        newImg.src = data;
-        newImg.setAttribute("data-username", username);
-        const remoteVideoDiv = document.querySelector(".remote-videos");
-        remoteVideoDiv.appendChild(newImg);
+        createRemoteVideoStream( { data, username, userId } );
         return;
     }
     img.src = data;

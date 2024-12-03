@@ -18,18 +18,25 @@ io.on("connection", (socket) => {
 
   socket.on("video", ({ data, username }) => {
     // console.log("video", data);
-    socket.broadcast.emit("video", { data, username });
+    socket.broadcast.emit("video", { data, username, userId: socket.id });
   });
 
   socket.on("newUser", ({ username }) => {
     console.log(`New user connected: ${username}`);
     socket.username = username;
-    io.emit("newUser", { username });
+    io.emit("newUser", { username, userId: socket.id });
+  });
+
+  socket.on("usernameChanged", (newUsername) => {
+    console.log(`Username changed to ${newUsername}`);
+    const oldUsername = socket.username;
+    socket.username = newUsername;
+    io.emit("usernameChanged", { username: newUsername, userId: socket.id });
   });
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");
-    io.emit("userDisconnected", { username: socket.username });
+    io.emit("userDisconnected", { username: socket.username, userId: socket.id });
   });
 });
 

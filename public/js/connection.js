@@ -15,7 +15,7 @@ socket.on("connect", () => {
     socket.emit("newUser", { username: currentUsername });
 });
 
-socket.on("newUser", ({ username }) => {    
+socket.on("newUser", ({ username,userId }) => {    
     console.log(`New user connected: ${username}`);
     if( username === currentUsername ) {
         return;
@@ -24,17 +24,29 @@ socket.on("newUser", ({ username }) => {
     if( existingImage ) {
         return;
     }
-    const img = document.createElement("img");
-    img.setAttribute("data-username", username);
-    const remoteVideoDiv = document.querySelector(".remote-videos");
-    remoteVideoDiv.appendChild(img);
+    createRemoteVideoStream({ data: "", username, userId });
 });
 
 
-socket.on("userDisconnected", ({ username }) => {
+socket.on("userDisconnected", ({ username, userId }) => {
     console.log(`User disconnected: ${username}`);
-    const img = document.querySelector(`img[data-username="${username}"]`);
+    const img = document.querySelector(`img[data-userId="${userId}"]`);
     if( img ) {
         img.remove();
+    }
+});
+
+
+socket.on("usernameChanged", ({ username, userId }) => {
+    console.log(`Username changed to ${username}`, userId);
+
+    const img = document.querySelector(`img[data-userId="${userId}"]`);
+    console.log(img);
+    if( img ) {
+        const overlay = img.parentElement.querySelector(".username-overlay");
+        if( !overlay ) {
+            return;
+        }
+        overlay.textContent = username;
     }
 });

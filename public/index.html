@@ -6,6 +6,7 @@
     <title>Videochat</title>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.2/p5.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <h1>Video chat</h1>
@@ -13,8 +14,15 @@
         <div class="local-video"></div>
         <div class="remote-videos"></div>
     </div>
+
+    <div class="ui">
+        <label for="username">Enter your username:</label>
+        <input type="text" id="username-input" name="username">
+        <button id="change-username-button">Change</button>
+    </div>
     
     <script src="/js/connection.js"></script>
     <script src="/js/video.js"></script>
+    <script src="/js/ui.js"></script>
 </body>
 </html>
