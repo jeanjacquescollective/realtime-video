@@ -102,8 +102,6 @@ video, canvas, img {
     z-index: 100;
 }
 
-
-
 .username-overlay{ 
     position: absolute;
     top: 0;
