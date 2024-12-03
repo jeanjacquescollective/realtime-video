@@ -20,7 +20,7 @@ function createRemoteVideoStream({ data, username, userId }) {
 
     const newImg = document.createElement("img");
     newImg.src = data;
-    newImg.setAttribute("data-userId", userId);
+    wrapper.setAttribute("data-userId", userId);
 
     wrapper.appendChild(newImg);
     wrapper.appendChild(overlay);

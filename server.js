@@ -21,6 +21,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("video", { data, username, userId: socket.id });
   });
 
+  socket.on("message", ({message, username}) => {
+    io.emit("message", {message, username, userId: socket.id});
+  });
+
+
   socket.on("newUser", ({ username }) => {
     console.log(`New user connected: ${username}`);
     socket.username = username;
@@ -35,7 +40,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
+    console.log("Client disconnected" + socket.username + " " + socket.id);
     io.emit("userDisconnected", { username: socket.username, userId: socket.id });
   });
 });

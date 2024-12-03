@@ -8,42 +8,47 @@ const uuid = () => {
     });
 }
 
-const currentUsername = uuid();
-
+let currentUsername = uuid();
+let currentUserId = uuid();
 socket.on("connect", () => {
     console.log("Connected to server");
     socket.emit("newUser", { username: currentUsername });
 });
 
+
+
 socket.on("newUser", ({ username,userId }) => {    
-    console.log(`New user connected: ${username}`);
-    if( username === currentUsername ) {
-        return;
-    }
-    const existingImage = document.querySelector(`img[data-username="${username}"]`);
-    if( existingImage ) {
-        return;
-    }
-    createRemoteVideoStream({ data: "", username, userId });
+        currentUsername = username;
+    currentUserId = userId;
+    // console.log(`New user connected: ${username}`);
+    // if( userId === currentUserId ) {
+    //     return;
+    // }
+    // currentUsername = username;
+    // currentUserId = userId;
+    // console.log(currentUserId);
+    // const existingImage = document.querySelector(`img[data-userId="${userId}"]`);
+    // if( existingImage ) {
+    //     return;
+    // }
+    // createRemoteVideoStream({ data: "", username, userId });
 });
 
 
 socket.on("userDisconnected", ({ username, userId }) => {
     console.log(`User disconnected: ${username}`);
-    const img = document.querySelector(`img[data-userId="${userId}"]`);
-    if( img ) {
-        img.remove();
+    const remoteVideoWrapper = document.querySelector(`[data-userId="${userId}"]`);
+    if( remoteVideoWrapper ) {
+        remoteVideoWrapper.remove();
     }
 });
 
 
 socket.on("usernameChanged", ({ username, userId }) => {
     console.log(`Username changed to ${username}`, userId);
-
-    const img = document.querySelector(`img[data-userId="${userId}"]`);
-    console.log(img);
-    if( img ) {
-        const overlay = img.parentElement.querySelector(".username-overlay");
+    const remoteVideoWrapper = document.querySelector(`[data-userId="${userId}"]`);
+    if(remoteVideoWrapper){
+        const overlay = remoteVideoWrapper.querySelector(".username-overlay");
         if( !overlay ) {
             return;
         }
